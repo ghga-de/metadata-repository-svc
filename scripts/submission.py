@@ -24,9 +24,9 @@ import typer
 
 
 def ega_accession(field: str, sub_dict: dict) -> bool:
-    """Check ega condition"""
+    """Check if the metadata has EGA or GHGA study accession identifier"""
     try:
-        if sub_dict[field].startswith("EGA") and len(sub_dict[field]) == 15:
+        if sub_dict[field].startswith("EGA") or sub_dict[field].startswith("GHGA"):
             return True
         return False
     except TypeError:
@@ -34,7 +34,7 @@ def ega_accession(field: str, sub_dict: dict) -> bool:
 
 
 def ega_accession_update(field: str, sub_dict: dict) -> dict:
-    """Update alias as ega acession"""
+    """Update alias as the accession id. It is used to update study id."""
     if ega_accession(field, sub_dict):
         sub_dict.update({"ega_accession": sub_dict[field]})
     return sub_dict
@@ -44,7 +44,7 @@ def submission():
     """
     submit transpiled json to create datasets
     """
-    file_path = "submission.json"  # This file has to be added to the scripts folder
+    file_path = "/workspace/scripts/GMCL-173_Proteomics_Submission_0.9.1.json"
     with open(file_path, "r", encoding="utf8") as file:
         submission_json = json.load(file)
     for item in submission_json:
